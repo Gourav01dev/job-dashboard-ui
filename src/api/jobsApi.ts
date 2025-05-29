@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { CreateJobPayload, Job, JobStatus, JobStatus } from '../types/job';
+import type { CreateJobPayload, Job, JobStatus } from '../types/job';
 const API_BASE = import.meta.env.VITE_API_BASE_UR;
 
 export const fetchActiveJobs = async (): Promise<Job[]> => {
