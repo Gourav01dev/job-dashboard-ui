@@ -1,6 +1,6 @@
 import axios from 'axios';
-import type { CreateJobPayload, Job } from '../types/job';
-const API_BASE = 'http://localhost:5000/api/job';
+import type { CreateJobPayload, Job } from '../types/types';
+const API_BASE = import.meta.env.VITE_API_BASE_UR;
 
 export const fetchActiveJobs = async (): Promise<Job[]> => {
   const res = await axios.get(`${API_BASE}/active-jobs`);
