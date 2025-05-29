@@ -16,6 +16,18 @@ export interface JobResponse {
   data: Job[];
 }
 
+export interface JobStatus {
+  activeJobs: number;
+  applicationRecieved:number;
+  hired:number
+}
+
+// export interface JobStatus {
+//   activeJobs: number;
+//   applicationRecieved: number;
+//   hired: number;
+// }
+
 export interface CreateJobPayload {
   jobProfile: string;
   createdAt: string;  // e.g. "21-5-2025"

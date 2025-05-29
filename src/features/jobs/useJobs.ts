@@ -3,12 +3,13 @@ import {
   fetchActiveJobs,
   fetchClosedJobs,
   fetchDraftJobs,
+  fetchJobStatus,
   postJob,
   postDraftJob,
   closeJob,
   fetchFilteredJobs,
 } from "../../api/jobsApi";
-import type { CreateJobPayload, Job } from "../../types/job";
+import type { CreateJobPayload, Job, JobStatus } from "../../types/job";
 
 export const useActiveJobs = () => {
   return useQuery<Job[]>({
@@ -28,6 +29,13 @@ export const useDraftJobs = () => {
   return useQuery<Job[]>({
     queryKey: ["draftJobs"],
     queryFn: fetchDraftJobs,
+  });
+};
+
+export const useJobStatus = () => {
+  return useQuery<JobStatus>({
+    queryKey: ["jobStatus"],
+    queryFn: fetchJobStatus,
   });
 };
 

@@ -34,6 +34,11 @@ export const fetchClosedJobs = createAsyncThunk<JobResponse>('jobs/fetchClosedJo
   return response.data;
 });
 
+export const fetchJobStatus = createAsyncThunk<JobResponse>('jobs/fetchJobStatus', async () => {
+  const response = await axios.get('/api/jobs/status');
+  return response.data;
+});
+
 export const postNewJob = createAsyncThunk<Job, Partial<Job>>('jobs/postNewJob', async (jobData) => {
   const response = await axios.post('/api/jobs', jobData);
   return response.data.data;

@@ -37,7 +37,7 @@ export const sidebarItems = [
   },
 ];
 
-export const utilityCards =[
+export const utilityCards = [
     {label:'Total Jobs Posted',
         count:32,
         image:jobPosted,

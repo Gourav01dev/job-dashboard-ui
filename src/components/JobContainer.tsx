@@ -11,20 +11,46 @@ import {
   useClosedJobs,
   useDraftJobs,
   useFilteredJobs,
+  useJobStatus,
 } from "../features/jobs/useJobs";
 import type { Job } from "../types/job";
+import LoadingSpinner from "./ui/LoadingSpinner";
 
 const JobContainer: React.FC = () => {
   const { data: activeJobs, isLoading, error } = useActiveJobs();
   const { data: closedJobs } = useClosedJobs();
   const { data: draftJobs } = useDraftJobs();
+  const { data: jobStatus } = useJobStatus();
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [activeStateData, setActiveStateData] = useState(utilityCards)
   const [selectedCategory, setSelectedCategory] = useState<"active" | "closed" | "draft">("active");
   const [filters, setFilters] = useState({
     experience: "",
     jobProfile: "",
     jobType: "",
   });
+
+  console.log(jobStatus, 'jobStatus')
+  console.log(activeStateData, "active")
+
+  useEffect(() => {
+  const updatedCards = utilityCards.map((card) => {
+    if (card.label === 'Total Jobs Posted') {
+      return { ...card, count: jobStatus?.activeJobs ?? 0 };
+    }
+    if (card.label === 'Application received') {
+      return { ...card, count: jobStatus?.applicationRecieved ?? 0 };
+    }
+    if (card.label === 'Hired') {
+      return { ...card, count: jobStatus?.hired ?? 0 };
+    }
+    return card;
+  });
+
+  setActiveStateData(updatedCards);
+}, [jobStatus]);
+
+console.log(activeStateData, 'activeState');
 
   const { data: filteredJobs } = useFilteredJobs({...filters, status: selectedCategory});
 
@@ -46,14 +72,14 @@ const JobContainer: React.FC = () => {
   }
 }, [activeJobs, selectedCategory]);
 
-  if (isLoading) return <div>Loading jobs...</div>;
+  if (isLoading) return <LoadingSpinner />;
   if (error) return <div>Error loading jobs</div>;
   return (
     <div className="px-8 py-5 w-full">
       <PageTitle title="JOBS" />
       <div className="w-full flex flex-wrap items-end justify-between gap-4 lg:gap-8">
         <div className="flex flex-wrap gap-4 lg:gap-6 flex-grow">
-          {utilityCards.map((item, index) => (
+          {activeStateData.map((item, index) => (
             <UtilityCard
               key={index}
               label={item.label}
