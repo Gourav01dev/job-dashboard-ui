@@ -32,12 +32,13 @@ export const closeJob = async (jobId: string): Promise<Job> => {
   return res.data.data || res.data;
 };
 
-export const fetchFilteredJobs = async (filters: { experience?: string; jobType?: string; jobProfile?: string }): Promise<Job[]> => {
+export const fetchFilteredJobs = async (filters: { experience?: string; jobType?: string; jobProfile?: string; status?: string }): Promise<Job[]> => {
   const params = new URLSearchParams();
 
   if (filters.experience) params.append('experience', filters.experience);
   if (filters.jobType) params.append('jobType', filters.jobType);
   if (filters.jobProfile) params.append('jobProfile', filters.jobProfile);
+  if (filters.status) params.append('status', filters.status);
 
   const res = await axios.get(`${API_BASE}?${params.toString()}`);
   return res.data.data || res.data;

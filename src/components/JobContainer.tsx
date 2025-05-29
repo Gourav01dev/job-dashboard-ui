@@ -12,13 +12,13 @@ import {
   useDraftJobs,
   useFilteredJobs,
 } from "../features/jobs/useJobs";
+import type { Job } from "../types/job";
 
 const JobContainer: React.FC = () => {
   const { data: activeJobs, isLoading, error } = useActiveJobs();
   const { data: closedJobs } = useClosedJobs();
   const { data: draftJobs } = useDraftJobs();
-  const [jobs, setJobs] = useState<any>([]);
-  // const [showingClosed, setShowingClosed] = useState(false);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<"active" | "closed" | "draft">("active");
   const [filters, setFilters] = useState({
     experience: "",
@@ -26,8 +26,7 @@ const JobContainer: React.FC = () => {
     jobType: "",
   });
 
-  const { data: filteredJobs } = useFilteredJobs(filters);
-  console.log(activeJobs, "activeJObs");
+  const { data: filteredJobs } = useFilteredJobs({...filters, status: selectedCategory});
 
   const handleToggleJobs = (category: "active" | "closed" | "draft") => {
   if (selectedCategory === category) {
@@ -92,7 +91,7 @@ const JobContainer: React.FC = () => {
       <div className="flex flex-wrap gap-4">
         {filters.experience || filters.jobProfile || filters.jobType ? (
           filteredJobs && filteredJobs.length > 0 ? (
-            filteredJobs.map((item: any) => (
+            filteredJobs.map((item: Job) => (
               <JobDescriptionCard
                 key={item._id}
                 id={item._id}
@@ -111,7 +110,7 @@ const JobContainer: React.FC = () => {
             <div>No filtered jobs found</div>
           )
         ) : jobs.length > 0 ? (
-          jobs.map((item: any) => (
+          jobs.map((item: Job) => (
             <JobDescriptionCard
               key={item._id}
               id={item._id}

@@ -69,9 +69,10 @@ export const useFilteredJobs = (filters: {
   experience?: string;
   jobType?: string;
   jobProfile?: string;
+  status?: string;
 }) => {
   const enabled =
-    !!filters.experience || !!filters.jobType || !!filters.jobProfile;
+    !!filters.experience || !!filters.jobType || !!filters.jobProfile || !!filters.status;
 
   return useQuery<Job[]>({
     queryKey: ["filteredJobs", filters],

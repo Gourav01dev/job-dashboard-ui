@@ -44,7 +44,6 @@ const JobDescriptionCard: React.FC<JobCardProps> = ({
   }, []);
 
   const handleClosePosition = () => {
-    console.log("Close Position clicked");
     setDropdownOpen(false);
     closeJob(id)
   };

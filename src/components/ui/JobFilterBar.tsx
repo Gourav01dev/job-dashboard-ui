@@ -34,7 +34,6 @@ const JobFilterBar: React.FC<JobFilterBarProps> = ({
   isActive,
 }) => {
 
-  console.log(jobs, 'job')
   return (
     <div className="flex items-center justify-between py-2 bg-black text-white">
       <div className="flex items-center gap-3 py-2 bg-black text-white">

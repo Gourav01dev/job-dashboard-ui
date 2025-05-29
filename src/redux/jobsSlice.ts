@@ -81,10 +81,10 @@ const jobsSlice = createSlice({
         state.closedJobs.push(closedJob);
       })
       .addMatcher(
-        (action) => action.type.endsWith('/rejected'),
-        (state, action: PayloadAction<unknown>) => {
+        (action): action is { type: string; error: { message: string } } => action.type.endsWith('/rejected'),
+        (state, action) => {
           state.status = 'failed';
-          state.error = action.payload || action?.error?.message || 'Something went wrong';
+          state.error = action.error?.message || 'Something went wrong';
         }
       );
   },
