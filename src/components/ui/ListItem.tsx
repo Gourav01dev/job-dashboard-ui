@@ -32,7 +32,7 @@ const ListItem:React.FC<ListProps> = ({name, image, subOption}) => {
       {subOption?.length > 0 && isOpen && (
         <div className='flex flex-col gap-2 pl-6 mt-1'>
           {subOption.map((item, idx) => (
-            <div key={idx} className='flex items-center gap-2 py-3'>
+            <div key={idx} className='flex items-center gap-2 py-3 cursor-pointer'>
               <img src={item.icon || ''} alt={item.label} width={22} height={20} />
               <h6 className='text-sm font-normal'>{item.label || 'label'}</h6>
               {item.count !== undefined && (
