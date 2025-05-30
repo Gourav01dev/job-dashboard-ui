@@ -33,7 +33,6 @@ const JobFilterBar: React.FC<JobFilterBarProps> = ({
   setFilters,
   isActive,
 }) => {
-
   return (
     <div className="flex items-center justify-between py-2 bg-black text-white">
       <div className="flex items-center gap-3 py-2 bg-black text-white">
@@ -51,7 +50,7 @@ const JobFilterBar: React.FC<JobFilterBarProps> = ({
             className={dropdownStyle}
             value={filters.jobProfile}
             onChange={(e) =>
-              setFilters((prev) => ({ ...prev, jobProfile: e.target.value,  }))
+              setFilters((prev) => ({ ...prev, jobProfile: e.target.value }))
             }
           >
             <option value="">Job Profile</option>
@@ -78,11 +77,14 @@ const JobFilterBar: React.FC<JobFilterBarProps> = ({
             }
           >
             <option value="">Experience</option>
-            {[...new Set(jobs?.map((item) => item.experience))].map((exp) => (
-              <option key={exp} value={exp}>
-                {exp}
-              </option>
-            ))}
+            {[...new Set(jobs?.map((item) => item.experience))].map((exp) => {
+              const key = exp?.split(" ")[0] || "";
+              return (
+                <option key={key} value={key}>
+                  {exp}
+                </option>
+              );
+            })}
           </select>
           <img
             src={ArrowDown}

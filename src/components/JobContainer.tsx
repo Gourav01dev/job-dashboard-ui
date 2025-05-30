@@ -30,9 +30,6 @@ const JobContainer: React.FC = () => {
     jobType: "",
   });
 
-  console.log(jobStatus, 'jobStatus')
-  console.log(activeStateData, "active")
-
   useEffect(() => {
   const updatedCards = utilityCards.map((card) => {
     if (card.label === 'Total Jobs Posted') {
@@ -49,8 +46,6 @@ const JobContainer: React.FC = () => {
 
   setActiveStateData(updatedCards);
 }, [jobStatus]);
-
-console.log(activeStateData, 'activeState');
 
   const { data: filteredJobs } = useFilteredJobs({...filters, status: selectedCategory});
 
