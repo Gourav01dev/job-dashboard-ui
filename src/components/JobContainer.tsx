@@ -130,6 +130,7 @@ console.log(activeStateData, 'activeState');
                 applied={16}
                 clicked={41}
                 inProcess={6}
+                selectedCategory={selectedCategory}
               />
             ))
           ) : (
@@ -149,6 +150,7 @@ console.log(activeStateData, 'activeState');
               applied={16}
               clicked={41}
               inProcess={6}
+              selectedCategory={selectedCategory}
             />
           ))
         ) : (

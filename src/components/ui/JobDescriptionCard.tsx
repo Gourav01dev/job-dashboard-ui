@@ -13,6 +13,7 @@ interface JobCardProps {
   applied: number;
   clicked: number;
   inProcess: number;
+  selectedCategory: string;
 }
 const JobDescriptionCard: React.FC<JobCardProps> = ({
   id,
@@ -25,6 +26,7 @@ const JobDescriptionCard: React.FC<JobCardProps> = ({
   applied,
   clicked,
   inProcess,
+  selectedCategory,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -61,12 +63,12 @@ const JobDescriptionCard: React.FC<JobCardProps> = ({
               Posted: {postedTime}
             </p>
           </div>
-          <button
+          {selectedCategory==='active' &&<button
             className="text-textGray text-xl"
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
             ⋮
-          </button>
+          </button>}
         </div>
 
         <div className="flex flex-wrap gap-2 text-xs font-medium mb-4">
