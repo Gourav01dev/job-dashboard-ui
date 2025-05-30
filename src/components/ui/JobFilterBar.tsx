@@ -7,6 +7,8 @@ interface JobFilterBarProps {
   setJobs?: () => void;
   jobs?: any[];
   isActive?:boolean,
+  searchText?: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
   filters: {
     experience: string;
     jobType: string;
@@ -32,6 +34,8 @@ const JobFilterBar: React.FC<JobFilterBarProps> = ({
   filters,
   setFilters,
   isActive,
+  searchText,
+  setSearchText,
 }) => {
   return (
     <div className="flex items-center justify-between py-2 bg-black text-white">
@@ -41,6 +45,9 @@ const JobFilterBar: React.FC<JobFilterBarProps> = ({
           <input
             type="text"
             placeholder="Enter a job title"
+             value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+ 
             className="bg-transparent text-sm outline-none w-full placeholder-gray-400"
           />
         </div>

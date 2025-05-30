@@ -22,53 +22,60 @@ const JobContainer: React.FC = () => {
   const { data: draftJobs } = useDraftJobs();
   const { data: jobStatus } = useJobStatus();
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [activeStateData, setActiveStateData] = useState(utilityCards)
+  const [activeStateData, setActiveStateData] = useState(utilityCards);
   const [selectedCategory, setSelectedCategory] = useState<"active" | "closed" | "draft">("active");
   const [filters, setFilters] = useState({
     experience: "",
     jobProfile: "",
     jobType: "",
   });
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-  const updatedCards = utilityCards.map((card) => {
-    if (card.label === 'Total Jobs Posted') {
-      return { ...card, count: jobStatus?.activeJobs ?? 0 };
-    }
-    if (card.label === 'Application received') {
-      return { ...card, count: jobStatus?.applicationRecieved ?? 0 };
-    }
-    if (card.label === 'Hired') {
-      return { ...card, count: jobStatus?.hired ?? 0 };
-    }
-    return card;
-  });
+    const updatedCards = utilityCards.map((card) => {
+      if (card.label === 'Total Jobs Posted') {
+        return { ...card, count: jobStatus?.activeJobs ?? 0 };
+      }
+      if (card.label === 'Application received') {
+        return { ...card, count: jobStatus?.applicationRecieved ?? 0 };
+      }
+      if (card.label === 'Hired') {
+        return { ...card, count: jobStatus?.hired ?? 0 };
+      }
+      return card;
+    });
+    setActiveStateData(updatedCards);
+  }, [jobStatus]);
 
-  setActiveStateData(updatedCards);
-}, [jobStatus]);
-
-  const { data: filteredJobs } = useFilteredJobs({...filters, status: selectedCategory});
+  const { data: filteredJobs } = useFilteredJobs({ ...filters, status: selectedCategory });
 
   const handleToggleJobs = (category: "active" | "closed" | "draft") => {
-  if (selectedCategory === category) {
-    setSelectedCategory("active");
-    setJobs(activeJobs ?? []);
-  } else {
-    setSelectedCategory(category);
-    if (category === "closed") setJobs(closedJobs ?? []);
-    else if (category === "draft") setJobs(draftJobs ?? []);
-    else setJobs(activeJobs ?? []);
-  }
-};
+    if (selectedCategory === category) {
+      setSelectedCategory("active");
+      setJobs(activeJobs ?? []);
+    } else {
+      setSelectedCategory(category);
+      if (category === "closed") setJobs(closedJobs ?? []);
+      else if (category === "draft") setJobs(draftJobs ?? []);
+      else setJobs(activeJobs ?? []);
+    }
+  };
 
   useEffect(() => {
-  if (activeJobs && selectedCategory === "active") {
-    setJobs(activeJobs);
-  }
-}, [activeJobs, selectedCategory]);
+    if (activeJobs && selectedCategory === "active") {
+      setJobs(activeJobs);
+    }
+  }, [activeJobs, selectedCategory]);
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <div>Error loading jobs</div>;
+
+  const searchedJobs = (filters.experience || filters.jobProfile || filters.jobType ? filteredJobs : jobs)?.filter(
+    (job) =>
+      job.jobProfile?.toLowerCase().includes(searchText.toLowerCase()) ||
+      job.jobDescription?.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <div className="px-8 py-5 w-full">
       <PageTitle title="JOBS" />
@@ -107,32 +114,14 @@ const JobContainer: React.FC = () => {
           filters={filters}
           setFilters={setFilters}
           isActive={selectedCategory === "closed"}
+          searchText={searchText}
+          setSearchText={setSearchText}
         />
       </div>
+
       <div className="flex flex-wrap gap-4">
-        {filters.experience || filters.jobProfile || filters.jobType ? (
-          filteredJobs && filteredJobs.length > 0 ? (
-            filteredJobs.map((item: Job) => (
-              <JobDescriptionCard
-                key={item._id}
-                id={item._id}
-                title={item.jobProfile || ""}
-                postedTime="56 minutes ago"
-                type={item.jobType || ""}
-                rate={item.salary || ""}
-                experience={item.experience || ""}
-                description={item.jobDescription || ""}
-                applied={16}
-                clicked={41}
-                inProcess={6}
-                selectedCategory={selectedCategory}
-              />
-            ))
-          ) : (
-            <div>No filtered jobs found</div>
-          )
-        ) : jobs.length > 0 ? (
-          jobs.map((item: Job) => (
+        {searchedJobs && searchedJobs.length > 0 ? (
+          searchedJobs.map((item: Job) => (
             <JobDescriptionCard
               key={item._id}
               id={item._id}
